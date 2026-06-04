@@ -102,6 +102,9 @@ kbd {
 }
 
 .section-nav a {
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
   margin-left: -10px;
   padding: 9px 10px;
   overflow-wrap: anywhere;
@@ -112,6 +115,13 @@ kbd {
   background: var(--active-bg);
   color: var(--active);
   font-weight: 700;
+}
+
+.nav-method {
+  flex: 0 0 42px;
+  color: #06a77d;
+  font-size: 10px;
+  font-weight: 800;
 }
 
 .utility-links {
@@ -230,6 +240,16 @@ kbd {
   grid-template-columns: minmax(0, 650px) minmax(390px, 430px);
   gap: 56px;
   align-items: start;
+  padding: 20px 0 84px;
+  border-bottom: 1px solid var(--line);
+}
+
+.doc-section + .doc-section {
+  padding-top: 70px;
+}
+
+.doc-section:last-child {
+  border-bottom: 0;
 }
 
 .doc-copy {
@@ -521,6 +541,18 @@ p code,
   color: var(--green);
 }
 
+.method.get {
+  color: #5da2ff;
+}
+
+.method.patch {
+  color: #f0b429;
+}
+
+.method.delete {
+  color: #ff6572;
+}
+
 .endpoint-card-header select {
   max-width: 112px;
   border: 0;
@@ -673,4 +705,3 @@ pre code {
     padding: 12px;
   }
 }
-
