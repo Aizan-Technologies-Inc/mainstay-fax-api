@@ -730,7 +730,7 @@ const endpoints = [
     method: "GET",
     path: "/reports/usage/download/{report-key}",
     displayPath: "/reports/usage/download/{report-key}?fileType={fileType}",
-    url: `${BASE_URL}/reports/usage/download/{report-key}?fileType=CSV`,
+    url: `${BASE_URL}/reports/usage/download/{report-key}?fileType={fileType}`,
     globoff: true,
     description:
       "Downloads a usage report by report key and requested file type so users can analyze detailed usage data.",
