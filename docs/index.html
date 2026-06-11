@@ -9,7 +9,7 @@
       content="GitHub Pages documentation for the Aizan Mainstay Fax API."
     />
     <link rel="icon" href="assets/aizan-logo.svg" />
-    <link rel="stylesheet" href="styles.css?v=full-migration" />
+    <link rel="stylesheet" href="styles.css?v=full-migration-2" />
   </head>
   <body>
     <div class="page-shell">
@@ -19,22 +19,26 @@
         </a>
 
         <nav class="section-nav">
-          <a class="is-active" href="#tokens">/tokens</a>
-          <a href="#health">/health</a>
-          <a href="#faxes-received">/faxes/received</a>
-          <a href="#faxes-sent">/faxes/sent</a>
-          <a href="#faxes-metadata">/faxes/metadata</a>
-          <a href="#faxes">/faxes</a>
-          <a href="#fax-metadata">/faxes/{fax_id}/metadata</a>
-          <a href="#fax-image">/faxes/{fax_id}/image</a>
-          <a href="#fax-image-pages">/faxes/{fax_id}/image/pages</a>
-          <a href="#fax-details">/faxes/{fax_id}</a>
-          <a href="#fax-cancel">/faxes/{fax_id}/cancel</a>
-          <a href="#transmission-details">/faxes/{fax_id}/transmission-details</a>
-          <a href="#application-notifications">/applications/{application-id}/notifications</a>
-          <a href="#notifications">/notifications</a>
-          <a href="#usage-reports">/reports/usage</a>
-          <a href="#usage-download">/reports/usage/download/{report-key}</a>
+          <a class="is-active" href="#tokens"><span class="nav-method">POST</span>/tokens</a>
+          <a href="#health"><span class="nav-method">GET</span>/health</a>
+          <a href="#faxes-received"><span class="nav-method">GET</span>/faxes/received</a>
+          <a href="#faxes-sent"><span class="nav-method">GET</span>/faxes/sent</a>
+          <a href="#faxes-metadata"><span class="nav-method">POST</span>/faxes/metadata</a>
+          <a href="#faxes-create"><span class="nav-method">POST</span>/faxes</a>
+          <a href="#fax-metadata-get"><span class="nav-method">GET</span>/faxes/{fax_id}/metadata</a>
+          <a href="#fax-metadata-patch"><span class="nav-method">PATCH</span>/faxes/{fax_id}/metadata</a>
+          <a href="#fax-image"><span class="nav-method">GET</span>/faxes/{fax_id}/image</a>
+          <a href="#fax-image-pages"><span class="nav-method">GET</span>/faxes/{fax_id}/image/pages</a>
+          <a href="#fax-delete"><span class="nav-method">DELETE</span>/faxes/{fax_id}</a>
+          <a href="#fax-cancel"><span class="nav-method">POST</span>/faxes/{fax_id}/cancel</a>
+          <a href="#fax-transmission-details"><span class="nav-method">GET</span>/faxes/{fax_id}/transmission-details</a>
+          <a href="#application-notifications-get"><span class="nav-method">GET</span>/applications/{application-id}/notifications</a>
+          <a href="#application-notifications-post"><span class="nav-method">POST</span>/applications/{application-id}/notifications</a>
+          <a href="#application-notification-delete"><span class="nav-method">DELETE</span>/applications/{application-id}/notifications/{notification-id}</a>
+          <a href="#application-notification-patch"><span class="nav-method">PATCH</span>/applications/{application-id}/notifications/{notification-id}</a>
+          <a href="#notifications"><span class="nav-method">GET</span>/notifications</a>
+          <a href="#reports-usage"><span class="nav-method">GET</span>/reports/usage</a>
+          <a href="#reports-usage-download"><span class="nav-method">GET</span>/reports/usage/download/{report-key}</a>
         </nav>
 
         <div class="utility-links">
@@ -65,6 +69,6 @@
       </main>
     </div>
 
-    <script src="app.js?v=full-migration"></script>
+    <script src="app.js?v=full-migration-2"></script>
   </body>
 </html>

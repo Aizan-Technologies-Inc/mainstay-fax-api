@@ -418,13 +418,13 @@ const endpoints = [
     title: "/faxes/{fax_id}/image",
     method: "GET",
     path: "/opc/v1/faxes/{fax_id}/image",
-    displayPath: "/opc/v1/faxes/{fax_id}/image?desired_fromat=PDF",
-    url: `${BASE_URL}/opc/v1/faxes/{fax_id}/image?desired_fromat=PDF`,
+    displayPath: "/opc/v1/faxes/{fax_id}/image?desired_format=PDF",
+    url: `${BASE_URL}/opc/v1/faxes/{fax_id}/image?desired_format=PDF`,
     globoff: true,
     description:
       "Retrieves the image associated with a specific fax ID and returns image metadata such as file name and image content.",
     headers: standardHeaders,
-    queryParams: [["desired_fromat", "string", "Requested image format, such as PDF."]],
+    queryParams: [["desired_format", "string", "Requested image format, such as PDF."]],
     pathParams: [["fax_id", "string", "The unique identifier of the fax image to retrieve."]],
     responses: standardResponses(
       "200",
@@ -599,8 +599,8 @@ const endpoints = [
     id: "application-notification-delete",
     title: "/applications/{application-id}/notifications/{notification-id}",
     method: "DELETE",
-    path: "/opc/v1/applications/{application-id}/notifications/{notification-id}/",
-    url: `${BASE_URL}/opc/v1/applications/APP_ID/notifications/NOTIFICATION_ID/`,
+    path: "/opc/v1/applications/{application-id}/notifications/{notification-id}",
+    url: `${BASE_URL}/opc/v1/applications/APP_ID/notifications/NOTIFICATION_ID`,
     description: "Deletes a specific notification associated with an application.",
     headers: [
       ["Authorization", "string REQUIRED", "The authorization token for accessing the API."],
@@ -649,8 +649,8 @@ const endpoints = [
     title: "/notifications",
     method: "GET",
     path: "/opc/v1/notifications",
-    displayPath: "/opc/v1/notifications?after=...&before=...&fax_direction=OUTBOUND&sent_status=SUCCESSFULL",
-    url: `${BASE_URL}/opc/v1/notifications?after=2024-12-17T14%3A56%3A16.395012%2000%3A0&before=2024-12-17T14%3A56%3A16.395012%2000%3A0&fax_direction=OUTBOUND&sent_status=SUCCESSFULL`,
+    displayPath: "/opc/v1/notifications?after=...&before=...&fax_direction=OUTBOUND&sent_status=SUCCESSFUL",
+    url: `${BASE_URL}/opc/v1/notifications?after=2024-12-17T14%3A56%3A16.395012%2000%3A0&before=2024-12-17T14%3A56%3A16.395012%2000%3A0&fax_direction=OUTBOUND&sent_status=SUCCESSFUL`,
     description:
       "Retrieves notification transaction details, including timestamp, fax direction, destination, notification type, and sent status.",
     headers: [
@@ -729,8 +729,8 @@ const endpoints = [
     title: "/reports/usage/download/{report-key}",
     method: "GET",
     path: "/reports/usage/download/{report-key}",
-    displayPath: "/reports/usage/download/{report-key}?fileType={}",
-    url: `${BASE_URL}/reports/usage/download/{}?fileType={}`,
+    displayPath: "/reports/usage/download/{report-key}?fileType={fileType}",
+    url: `${BASE_URL}/reports/usage/download/{report-key}?fileType=CSV`,
     globoff: true,
     description:
       "Downloads a usage report by report key and requested file type so users can analyze detailed usage data.",
@@ -875,7 +875,7 @@ function renderEndpoint(endpoint, index) {
           </label>
           <button type="button" data-copy="${endpoint.id}-request">Copy</button>
         </div>
-        <pre id="${endpoint.id}-request"><code></code></pre>
+        <pre id="${endpoint.id}-request"><code>${escapeHtml(buildCurl(endpoint))}</code></pre>
       </div>
 
       <div class="code-card response-card">
@@ -906,7 +906,8 @@ function headerObject(endpoint) {
 }
 
 function buildCurl(endpoint) {
-  const lines = [`curl --location${endpoint.globoff ? " --globoff" : ""}${["GET", "POST"].includes(endpoint.method) ? "" : ` --request ${endpoint.method}`} '${endpoint.url}'`];
+  const methodFlag = endpoint.method === "GET" ? "" : ` --request ${endpoint.method}`;
+  const lines = [`curl --location${endpoint.globoff ? " --globoff" : ""}${methodFlag} '${endpoint.url}'`];
   Object.entries(headerObject(endpoint)).forEach(([name, value]) => {
     lines.push(`  --header '${name}: ${value}'`);
   });
