@@ -66,13 +66,16 @@ kbd {
   top: 0;
   display: flex;
   height: 100vh;
+  height: 100dvh;
   flex-direction: column;
+  overflow: hidden;
   padding: 38px 28px 30px;
   background: var(--sidebar);
 }
 
 .brand {
   display: inline-flex;
+  flex: 0 0 auto;
   width: 120px;
   height: 58px;
   align-items: center;
@@ -87,8 +90,15 @@ kbd {
 
 .section-nav {
   display: grid;
+  flex: 1 1 auto;
   gap: 4px;
+  min-height: 0;
   margin-top: 28px;
+  margin-right: -12px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding-right: 10px;
+  scrollbar-gutter: stable;
 }
 
 .section-nav a,
@@ -126,6 +136,7 @@ kbd {
 
 .utility-links {
   display: grid;
+  flex: 0 0 auto;
   gap: 8px;
   margin-top: 22px;
 }
@@ -135,7 +146,8 @@ kbd {
 }
 
 .sidebar-footer {
-  margin-top: auto;
+  flex: 0 0 auto;
+  margin-top: 18px;
   color: var(--subtle);
   font-size: 14px;
 }
@@ -671,12 +683,18 @@ pre code {
   .sidebar {
     position: static;
     height: auto;
+    overflow: visible;
     padding: 22px 20px;
     border-bottom: 1px solid var(--line);
   }
 
   .section-nav {
+    flex: none;
     grid-template-columns: 1fr;
+    max-height: none;
+    margin-right: 0;
+    overflow: visible;
+    padding-right: 0;
   }
 
   .sidebar-footer {
