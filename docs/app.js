@@ -987,6 +987,82 @@ const navLinks = Array.from(document.querySelectorAll(".section-nav a"));
 const sections = navLinks
   .map((link) => document.querySelector(link.getAttribute("href")))
   .filter(Boolean);
+const searchInput = document.querySelector("#section-search");
+const searchStatus = document.querySelector("#search-status");
+const endpointSearchIndex = endpoints.map((endpoint) => ({
+  id: endpoint.id,
+  text: [
+    endpoint.method,
+    endpoint.title,
+    endpoint.path,
+    endpoint.displayPath,
+    endpoint.url,
+    endpoint.description,
+    ...(endpoint.headers || []).flat(),
+    ...(endpoint.queryParams || []).flat(),
+    ...(endpoint.pathParams || []).flat(),
+    ...(endpoint.bodyParams || []).flat(),
+    ...(endpoint.attributes || []).flat(),
+    ...endpoint.responses.map((response) => `${response.code} ${response.label} ${response.body}`)
+  ]
+    .filter(Boolean)
+    .join(" ")
+    .toLowerCase()
+}));
+let activeSearchTarget = "";
+
+function setActiveNav(id) {
+  navLinks.forEach((link) => {
+    link.classList.toggle("is-active", link.getAttribute("href") === `#${id}`);
+  });
+}
+
+function updateSearch(query) {
+  const normalizedQuery = query.trim().toLowerCase();
+
+  if (!normalizedQuery) {
+    navLinks.forEach((link) => link.classList.remove("is-search-hidden"));
+    sections.forEach((section) => section.classList.remove("is-search-hidden"));
+    searchStatus?.classList.remove("is-visible");
+    if (searchStatus) searchStatus.textContent = "";
+    activeSearchTarget = "";
+    return;
+  }
+
+  const matches = endpointSearchIndex.filter((endpoint) => endpoint.text.includes(normalizedQuery));
+  const matchingIds = new Set(matches.map((endpoint) => endpoint.id));
+
+  navLinks.forEach((link) => {
+    const id = link.getAttribute("href")?.slice(1);
+    link.classList.toggle("is-search-hidden", !matchingIds.has(id));
+  });
+
+  sections.forEach((section) => {
+    section.classList.toggle("is-search-hidden", !matchingIds.has(section.id));
+  });
+
+  if (searchStatus) {
+    const resultLabel = matches.length === 1 ? "result" : "results";
+    searchStatus.textContent = matches.length
+      ? `${matches.length} ${resultLabel} for "${query.trim()}".`
+      : `No endpoints found for "${query.trim()}".`;
+    searchStatus.classList.add("is-visible");
+  }
+
+  if (!matches.length) {
+    activeSearchTarget = "";
+    return;
+  }
+
+  const firstMatch = matches[0].id;
+  setActiveNav(firstMatch);
+
+  if (activeSearchTarget === firstMatch) return;
+
+  activeSearchTarget = firstMatch;
+  document.getElementById(firstMatch)?.scrollIntoView({ block: "start" });
+  history.replaceState(null, "", `#${firstMatch}`);
+}
 
 if (sections.length > 0) {
   const observer = new IntersectionObserver(
@@ -997,9 +1073,7 @@ if (sections.length > 0) {
 
       if (!visible) return;
 
-      navLinks.forEach((link) => {
-        link.classList.toggle("is-active", link.getAttribute("href") === `#${visible.target.id}`);
-      });
+      setActiveNav(visible.target.id);
     },
     {
       rootMargin: "-20% 0px -60% 0px",
@@ -1010,13 +1084,13 @@ if (sections.length > 0) {
   sections.forEach((section) => observer.observe(section));
 }
 
-document.querySelector("#section-search").addEventListener("input", (event) => {
-  const query = event.target.value.trim().toLowerCase();
+searchInput?.addEventListener("input", (event) => {
+  updateSearch(event.target.value);
+});
 
-  navLinks.forEach((link) => {
-    const matches = !query || link.textContent.toLowerCase().includes(query);
-    link.hidden = !matches;
-  });
+document.querySelector('a[href="#search"]')?.addEventListener("click", (event) => {
+  event.preventDefault();
+  searchInput?.focus();
 });
 
 document.addEventListener("keydown", (event) => {
@@ -1026,7 +1100,7 @@ document.addEventListener("keydown", (event) => {
   if (activeTag === "INPUT" || activeTag === "TEXTAREA" || activeTag === "SELECT") return;
 
   event.preventDefault();
-  document.querySelector("#section-search").focus();
+  searchInput?.focus();
 });
 
 document.querySelectorAll("[data-copy]").forEach((button) => {

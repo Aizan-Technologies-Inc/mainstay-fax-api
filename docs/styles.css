@@ -145,17 +145,6 @@ kbd {
   padding: 4px 0;
 }
 
-.sidebar-footer {
-  flex: 0 0 auto;
-  margin-top: 18px;
-  color: var(--subtle);
-  font-size: 14px;
-}
-
-.sidebar-footer strong {
-  color: #111317;
-}
-
 .content {
   width: min(100%, 1500px);
   padding: 42px 42px 96px;
@@ -225,6 +214,23 @@ kbd {
   border-radius: 99px;
   background: currentColor;
   transform: rotate(45deg);
+}
+
+.search-status {
+  display: none;
+  margin: -12px 0 24px;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.search-status.is-visible {
+  display: block;
+}
+
+.section-nav a.is-search-hidden,
+.doc-section.is-search-hidden {
+  display: none;
 }
 
 .theme-toggle {
@@ -695,10 +701,6 @@ pre code {
     margin-right: 0;
     overflow: visible;
     padding-right: 0;
-  }
-
-  .sidebar-footer {
-    margin-top: 24px;
   }
 
   .content {
