@@ -981,7 +981,74 @@ function render() {
     .join("");
 }
 
+function setupThemeToggle() {
+  const themeToggle = document.querySelector(".theme-toggle");
+  const storedTheme = (() => {
+    try {
+      return localStorage.getItem("aizan-docs-theme");
+    } catch {
+      return null;
+    }
+  })();
+
+  const applyTheme = (theme) => {
+    const nextTheme = theme === "dark" ? "dark" : "light";
+    document.documentElement.dataset.theme = nextTheme;
+    themeToggle?.setAttribute("aria-pressed", String(nextTheme === "dark"));
+    themeToggle?.setAttribute(
+      "title",
+      nextTheme === "dark" ? "Switch to light theme" : "Switch to dark theme"
+    );
+
+    try {
+      localStorage.setItem("aizan-docs-theme", nextTheme);
+    } catch {
+      // Storage can be unavailable in some browser privacy modes.
+    }
+  };
+
+  applyTheme(storedTheme === "dark" ? "dark" : "light");
+
+  themeToggle?.addEventListener("click", () => {
+    applyTheme(document.documentElement.dataset.theme === "dark" ? "light" : "dark");
+  });
+}
+
+function renderUtilitySections() {
+  const sectionsRoot = document.querySelector("#doc-sections");
+  if (!sectionsRoot || document.getElementById("api-explorer")) return;
+
+  const cards = endpoints
+    .map((endpoint) => {
+      const pathText = endpoint.displayPath || endpoint.path;
+      return `<a class="explorer-card" href="#${endpoint.id}">
+        <span>${escapeHtml(endpoint.method)}</span>
+        <strong>${escapeHtml(endpoint.title)}</strong>
+        <p>${escapeHtml(pathText)}</p>
+      </a>`;
+    })
+    .join("");
+
+  sectionsRoot.insertAdjacentHTML(
+    "beforeend",
+    `<section class="utility-section" id="api-explorer">
+      <h1>API Explorer</h1>
+      <p>Use this compact endpoint index to jump directly into the Mainstay Fax API sections.</p>
+      <div class="explorer-grid">${cards}</div>
+    </section>
+    <section class="utility-section" id="changelog">
+      <h1>Changelog</h1>
+      <ol class="changelog-list">
+        <li><strong>Current GitHub Pages build</strong><span>Search filters endpoints, API Explorer links to each endpoint, and the light/dark theme toggle is active.</span></li>
+        <li><strong>Fax API migration</strong><span>Recreated the Mainstay Fax endpoint documentation as a static GitHub Pages site with language examples and response-code tabs.</span></li>
+      </ol>
+    </section>`
+  );
+}
+
 render();
+renderUtilitySections();
+setupThemeToggle();
 
 const navLinks = Array.from(document.querySelectorAll(".section-nav a"));
 const sections = navLinks
